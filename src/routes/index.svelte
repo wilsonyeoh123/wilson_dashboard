@@ -1,6 +1,7 @@
 <script>
 
     import supabase from '$lib/db';
+import { bubble } from 'svelte/internal';
 
     async function logout() {
    	 const { error } = await supabase.auth.signOut();
@@ -180,7 +181,48 @@
 	],
   };
 
+  function addTimeSlot(day){
+	  if(day ==="Monday"){
+		timetable.Monday = [
+    ...timetable.Monday,
+    { name: "??", period: 1, style: "" }
+	 ];
+	  }else if (day === "Tuesday"){
+	  timetable.Tuesday = [
+    ...timetable.Tuesday,
+    { name: "??", period: 1, style: "" }
+  ];
+	  }else if (day === "Wednesday"){
+		timetable.Wednesday = [
+    ...timetable.Wednesday,
+    { name: "??", period: 1, style: "" }
+  ];
+	  }else if (day === "Thursday"){
+		timetable.Thursday = [
+    ...timetable.Thursday,
+    { name: "??", period: 1, style: "" }
+  ];
+	  }else if (day === "Friday"){
+		timetable.Friday = [
+    ...timetable.Friday,
+    { name: "??", period: 1, style: "" }
+  ];
+  }
+ };
 
+  let curDay;
+  let curIndex;
+  let curName;
+  let curPeriod;
+  let curStyle;
+
+  function showCurData(day, index, name, period, style){
+	  curDay = day;
+	  curIndex = index;
+	  curName = name;
+	  curPeriod = period;
+	  curStyle = style;
+  }
 
 </script>
 <div class="container">
@@ -210,11 +252,15 @@
             <th scope="row" class="table-dark">Monday</th>
             {#each timetable.Monday  as timeSlot}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn">
+                <button type="button" class="btn"> data-bs-toggle="modal"data-bs-target=""
                     {timeSlot.name}
                 </button>
                 </td>
             {/each}
+			<td>
+				<button class="btn" 
+				on:click={() => addTimeSlot("Monday")}>+</button>
+			</td>
           </tr>
           <tr>
             <th scope="row"class="table-dark">Tuesday</th>
@@ -258,6 +304,49 @@
           </tr>
         </tbody>
       </table>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+	Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Edit Time Slot</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="name">name</span>
+				<input type="text" class="form-control">
+			  </div>
+			  <div class="input-group mb-3">
+				<span class="input-group-text" id="period">period</span>
+				<input type="text" class="form-control">
+			  </div>
+			  <div class="input-group mb-3">
+				<label class="input-group-text" for="inputGroupSelect01">Options</label>
+				<select class="form-select" id="inputGroupSelect01">
+				  <option value="">default</option>
+				  <option value="table-primary">blue</option>
+				  <option value="table-success">green</option>
+				  <option value="table-danger">red</option>				
+				  <option value="table-warning">yellow</option>
+				  <option value="table-secondary">grey</option>
+				</select>
+			  </div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary">Cancle</button>
+		  <button type="button" class="btn btn-primary">Delete</button>
+		  <button type="button" class="btn btn-primary">Save changes</button>
+		</div>
+		</div>
+	  </div>
+	</div>
+  </div>
 </div>
 <!-- Sign Out -->
 <section class="container px-4 py-3 text-center">
