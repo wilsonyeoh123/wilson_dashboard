@@ -229,22 +229,22 @@ import { bind, bubble } from 'svelte/internal';
   	timetable.Monday[index].period = newPeriod;
   	timetable.Monday[index].style = newStyle;
 	}
-	if (day === "Tueday") {
+	else if (day === "Tueday") {
   	timetable.Monday[index].name = newName;
   	timetable.Monday[index].period = newPeriod;
   	timetable.Monday[index].style = newStyle;
 	}
-	if (day === "Wednesday") {
+	else if (day === "Wednesday") {
   	timetable.Monday[index].name = newName;
   	timetable.Monday[index].period = newPeriod;
   	timetable.Monday[index].style = newStyle;
 	}
-	if (day === "Thursday") {
+	else if (day === "Thursday") {
   	timetable.Monday[index].name = newName;
   	timetable.Monday[index].period = newPeriod;
   	timetable.Monday[index].style = newStyle;
 	}
-	if (day === "Friday") {
+	else if (day === "Friday") {
   	timetable.Monday[index].name = newName;
   	timetable.Monday[index].period = newPeriod;
   	timetable.Monday[index].style = newStyle;
@@ -403,7 +403,7 @@ import { bind, bubble } from 'svelte/internal';
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
-		  <button type="button" class="btn btn-primary" on:click={deleteTimeSlot}>Delete</button>
+		  <button type="button" class="btn btn-primary" on:click={()=> deleteTimeSlot(curDay, curIndex)}>Delete</button>
 		  <button type="button" class="btn btn-primary">Save changes</button>
 		</div>
 		</div>
