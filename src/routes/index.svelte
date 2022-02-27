@@ -1,7 +1,7 @@
 <script>
 
     import supabase from '$lib/db';
-import { bubble } from 'svelte/internal';
+import { bind, bubble } from 'svelte/internal';
 
     async function logout() {
    	 const { error } = await supabase.auth.signOut();
@@ -223,6 +223,33 @@ import { bubble } from 'svelte/internal';
 	  curPeriod = period;
 	  curStyle = style;
   }
+   function  deleteTimeSlot(day,index){
+   if (day === "Monday") {
+  	timetable.Monday[index].name = newName;
+  	timetable.Monday[index].period = newPeriod;
+  	timetable.Monday[index].style = newStyle;
+	}
+	if (day === "Tueday") {
+  	timetable.Monday[index].name = newName;
+  	timetable.Monday[index].period = newPeriod;
+  	timetable.Monday[index].style = newStyle;
+	}
+	if (day === "Wednesday") {
+  	timetable.Monday[index].name = newName;
+  	timetable.Monday[index].period = newPeriod;
+  	timetable.Monday[index].style = newStyle;
+	}
+	if (day === "Thursday") {
+  	timetable.Monday[index].name = newName;
+  	timetable.Monday[index].period = newPeriod;
+  	timetable.Monday[index].style = newStyle;
+	}
+	if (day === "Friday") {
+  	timetable.Monday[index].name = newName;
+  	timetable.Monday[index].period = newPeriod;
+  	timetable.Monday[index].style = newStyle;
+	}
+}
 
 </script>
 <div class="container">
@@ -250,9 +277,17 @@ import { bubble } from 'svelte/internal';
           
           <tr>
             <th scope="row" class="table-dark">Monday</th>
-            {#each timetable.Monday  as timeSlot}
+            {#each timetable.Monday  as timeSlot,index}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn"> data-bs-toggle="modal"data-bs-target=""
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#EditModal" on:click={() =>
+					showCurData(
+					  "Monday",
+					  index,
+					  timeSlot.name,
+					  timeSlot.period,
+					  timeSlot.style
+					)}
+		>
                     {timeSlot.name}
                 </button>
                 </td>
@@ -264,9 +299,16 @@ import { bubble } from 'svelte/internal';
           </tr>
           <tr>
             <th scope="row"class="table-dark">Tuesday</th>
-            {#each timetable.Tuesday  as timeSlot}
+            {#each timetable.Tuesday  as timeSlot,index}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn">
+                <button type="button" class="btn"data-bs-toggle="modal" data-bs-target="#EditModal" on:click={() =>
+					showCurData(
+					  "Tuesday",
+					  index,
+					  timeSlot.name,
+					  timeSlot.period,
+					  timeSlot.style
+					)}>
                     {timeSlot.name}
                 </button>
                 </td>
@@ -274,9 +316,16 @@ import { bubble } from 'svelte/internal';
           </tr>
           <tr>
             <th scope="row"class="table-dark">Wednesday</th>
-            {#each timetable.Wednesday  as timeSlot}
+            {#each timetable.Wednesday  as timeSlot,index}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#EditModal" on:click={() =>
+					showCurData(
+					  "Wednesday",
+					  index,
+					  timeSlot.name,
+					  timeSlot.period,
+					  timeSlot.style
+					)}>
                     {timeSlot.name}
                 </button>
                 </td>
@@ -284,9 +333,16 @@ import { bubble } from 'svelte/internal';
           </tr>
           <tr>
             <th scope="row"class="table-dark">Thursday</th>
-            {#each timetable.Thursday  as timeSlot}
+            {#each timetable.Thursday  as timeSlot,index}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#EditModal" on:click={() =>
+					showCurData(
+					  "Thursday",
+					  index,
+					  timeSlot.name,
+					  timeSlot.period,
+					  timeSlot.style
+					)}>
                     {timeSlot.name}
                 </button>
                 </td>
@@ -294,9 +350,16 @@ import { bubble } from 'svelte/internal';
           </tr>
           <tr>
             <th scope="row"class="table-dark">Friday</th>
-            {#each timetable.Friday  as timeSlot}
+            {#each timetable.Friday  as timeSlot,index}
                 <td colspan={timeSlot.period} class={timeSlot.style}>
-                <button type="button" class="btn">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#EditModal" on:click={() =>
+					showCurData(
+					  "Friday",
+					  index,
+					  timeSlot.name,
+					  timeSlot.period,
+					  timeSlot.style
+					)}>
                     {timeSlot.name}
                 </button>
                 </td>
@@ -310,25 +373,25 @@ import { bubble } from 'svelte/internal';
   </button>
   
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 	  <div class="modal-content">
 		<div class="modal-header">
-		  <h5 class="modal-title" id="exampleModalLabel">Edit Time Slot</h5>
+		  <h5 class="modal-title" id="EditModal">Edit Time Slot</h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
 		<div class="modal-body">
 			<div class="input-group mb-3">
 				<span class="input-group-text" id="name">name</span>
-				<input type="text" class="form-control">
+				<input type="text" class="form-control" bind:value={curName}>
 			  </div>
 			  <div class="input-group mb-3">
 				<span class="input-group-text" id="period">period</span>
-				<input type="text" class="form-control">
+				<input type="text" class="form-control" bind:value={curPeriod}>
 			  </div>
 			  <div class="input-group mb-3">
 				<label class="input-group-text" for="inputGroupSelect01">Options</label>
-				<select class="form-select" id="inputGroupSelect01">
+				<select class="form-select" id="inputGroupSelect01" bind:value={curStyle}>
 				  <option value="">default</option>
 				  <option value="table-primary">blue</option>
 				  <option value="table-success">green</option>
@@ -339,15 +402,14 @@ import { bubble } from 'svelte/internal';
 			  </div>
 		</div>
 		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary">Cancle</button>
-		  <button type="button" class="btn btn-primary">Delete</button>
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+		  <button type="button" class="btn btn-primary" on:click={deleteTimeSlot}>Delete</button>
 		  <button type="button" class="btn btn-primary">Save changes</button>
 		</div>
 		</div>
 	  </div>
 	</div>
   </div>
-</div>
 <!-- Sign Out -->
 <section class="container px-4 py-3 text-center">
     <button class="btn btn-secondary" on:click={logout}>Logout</button>
