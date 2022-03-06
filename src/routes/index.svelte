@@ -250,6 +250,39 @@ import { bind, bubble } from 'svelte/internal';
   	timetable.Monday[index].style = newStyle;
 	}
 }
+// Get entries
+async function getEntries() {
+  const { data, error } = await supabase.from("studentEntries").select();
+  if (error) alert(error.message);
+
+  if (data != "") {
+    timetable = data[0].timetable;
+  }
+}
+
+getEntries();
+
+
+function setTimeSlot(day, index, newName, newPeriod, newStyle){
+timetable[day][index].name=newName;
+timetable[day][index].period=newPeriod;
+timetable[day][index].style=newStyle;
+saveEntry();
+}
+
+// Upsert entry
+async function saveEntry() {
+  const { error } = await supabase.from("studentEntries").upsert(
+    {
+      user_id: supabase.auth.user().id,
+      timetable: timetable,
+    },
+    { onConflict: "user_id" }
+  );
+  if (error) alert(error.message);
+}
+
+
 
 </script>
 <div class="container">
@@ -403,8 +436,8 @@ import { bind, bubble } from 'svelte/internal';
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
-		  <button type="button" class="btn btn-primary" on:click={()=> deleteTimeSlot(curDay, curIndex)}>Delete</button>
-		  <button type="button" class="btn btn-primary">Save changes</button>
+		  <button type="button" class="btn btn-danger"data-bs-dissmiss="modal" on:click={()=> deleteTimeSlot(curDay, curIndex)}>Delete</button>
+		  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" on:click={()=>{setTimeSlot(curDay, curIndex, curName, curPeriod, curStyle)}}>Save changes</button>
 		</div>
 		</div>
 	  </div>
